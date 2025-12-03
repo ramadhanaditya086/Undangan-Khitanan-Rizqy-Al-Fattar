@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Tasyakuran Khitanan - Rizqy Al Fattar</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        html {
+            font-size: 1.1rem;
+        }
+        :root {
+            --primary-color: #0d6efd; 
+            --bg-pattern: url('https://www.transparenttextures.com/patterns/cubes.png');
+        }
+
+        body {
+            background-color: #f4f7f6;
+            background-image: var(--bg-pattern);
+            font-family: 'Nunito', sans-serif;
+            color: #4a4a4a;
+            overflow: hidden; 
+        }
+
+        /* --- SPLASH SCREEN --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background-color: #fff; background-image: var(--bg-pattern);
+            z-index: 9999;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            transition: opacity 1s ease-in-out, visibility 1s;
+        }
+        .hide-splash { opacity: 0; visibility: hidden; }
+        .splash-content-box { padding: 20px; width: 100%; max-width: 600px; }
+        .splash-title { font-size: 3rem; line-height: 1.2; }
+        .splash-name { font-size: 3.5rem; }
+
+        /* --- MAIN CONTENT --- */
+        #main-content { display: none; opacity: 0; transition: opacity 1.5s ease-in; }
+        
+        .invitation-card {
+            background: #fff; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--primary-color);
+            border-bottom: 5px solid var(--primary-color);
+            max-width: 500px; width: 100%; margin: 20px auto; position: relative;
+        }
+
+        /* --- MUSIC BUTTON --- */
+        #music-control {
+            position: fixed; bottom: 20px; right: 20px; z-index: 99999;
+            width: 50px; height: 50px; border-radius: 50%;
+            background-color: var(--primary-color); color: white;
+            border: 2px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: none; /* Hidden awal */
+            align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #music-control:active { transform: scale(0.9); }
+        .rotating { animation: spin 4s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- DETAIL ALIGNMENT --- */
+        .detail-row { display: flex; align-items: flex-start; margin-bottom: 20px; }
+        .detail-icon {
+            min-width: 50px; max-width: 50px; height: 50px;
+            background-color: rgba(13, 110, 253, 0.1); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary-color); font-size: 1.2rem; margin-right: 15px; 
+        }
+        .detail-text { display: flex; flex-direction: column; justify-content: center; padding-top: 2px; }
+        .label-title { font-weight: 700; color: #333; margin-bottom: 2px; font-size: 0.95rem; }
+
+        .profile-img-container {
+            width: 300px; height: 300px; margin: 0 auto;
+            border-radius: 50%; overflow: hidden;
+            border: 5px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+        }
+        .profile-img-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* --- COUNTDOWN --- */
+        .countdown-wrapper { display: flex; justify-content: space-between; gap: 10px; width: 100%; }
+        .countdown-box {
+            background: var(--primary-color); color: white;
+            padding: 12px 5px; border-radius: 10px; flex: 1;
+            text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .countdown-number { font-size: 1.8rem; font-weight: bold; line-height: 1.1; }
+        .countdown-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .script-font { font-family: 'Great Vibes', cursive; color: var(--primary-color); }
+        .event-details-box { background-color: #f8f9fa; border-radius: 12px; padding: 20px; margin: 20px 0; border: 1px solid #eee; }
+
+        .bank-card {
+            background: #fff; border: 1px solid #e0e0e0; border-radius: 10px;
+            padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .bank-card:hover { transform: translateY(-5px); }
+        .bank-logo { height: 30px; margin-bottom: 10px; }
+
+        .btn-custom { border-radius: 50px; box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3); transition: transform 0.2s; cursor: pointer; }
+        .btn-custom:active { transform: scale(0.95); }
+
+        .map-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; border: 1px solid #ddd; margin-top: 15px; }
+        .map-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        .comment-scroll { max-height: 350px; overflow-y: auto; padding: 10px; background: #fff; border-radius: 10px; border: 1px solid #eee; }
+        .comment-bubble { background: #f1f8ff; padding: 10px 15px; border-radius: 15px; border-top-left-radius: 0; text-align: left; width: 100%; }
+        .profile-initial { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; flex-shrink: 0; }
+        
+        @media (max-width: 576px) {
+            .splash-title { font-size: 2.5rem; }
+            .splash-name { font-size: 2.8rem; }
+            .countdown-number { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="msc/musik.mp3" type="audio/mp3">
+        Browser Anda tidak mendukung audio.
+    </audio>
+
+    <button id="music-control" onclick="toggleMusic()">
+        <i class="fas fa-compact-disc fa-2x rotating"></i>
+    </button>
+
+    <div id="splash-screen">
+        <div class="splash-content-box animate__animated animate__fadeInDown">
+            <h6 class="text-uppercase ls-2 text-muted mb-2">Undangan</h6>
+            <h1 class="splash-title fw-bold mb-2">Tasyakuran Khitanan</h1>
+            <h2 class="script-font splash-name mb-4">Rizqy Al Fattar</h2>
+
+            <div class="mb-4 fs-5 fw-bold text-dark animate__animated animate__fadeIn animate__delay-1s">
+                <p class="mb-0">Minggu,</p>
+                <p>7 Desember 2025</p>
+            </div>
+
+            <div class="mb-5 animate__animated animate__fadeIn animate__delay-1s">
+                <p class="small text-muted mb-1 fst-italic">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                <div class="border-bottom border-secondary d-inline-block px-4 py-1"></div>
+            </div>
+            
+            <button onclick="bukaUndangan()" class="btn btn-primary btn-lg px-5 py-3 btn-custom animate__animated animate__pulse animate__infinite">
+                <i class="fas fa-envelope-open-text me-2"></i> Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <div id="main-content" class="container min-vh-100 py-4">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="invitation-card p-4 text-center animate__animated animate__zoomIn">
+                
+                <div class="mb-2">
+                    <div class="bismillah fs-1 mb-2 script-font" style="color: #4a4a4a;">Bismillahirrahmanirrahim</div>
+                </div>
+
+                <p class="small text-muted mb-4">
+                    Dengan memohon Rahmat dan Ridho Allah SWT, kami bermaksud menyelenggarakan acara tasyakuran khitanan putra kami:
+                </p>
+
+                <div class="profile-img-container">
+                    <img src="img/khitanan.jpg" alt="Foto Rizqy">
+                </div>
+
+                <div class="mb-4">
+                    <h2 class="script-font display-3 mb-0">Rizqy Al Fattar</h2>
+                    <div class="text-muted small">Putra dari Bpk. Wawan Gunawan</div>
+                </div>
+
+                <div class="mt-5 mb-3">
+                    <h5 class="fw-bold text-uppercase ls-1" style="color: #444;">Undangan dan Acara</h5>
+                    <p class="small text-muted fst-italic">
+                        Bahagia rasanya apabila anda berkenan hadir dan memberikan doa pada :
+                    </p>
+                </div>
+
+                <div class="countdown-wrapper mb-4">
+                    <div class="countdown-box"><div id="days" class="countdown-number">0</div><div class="countdown-label">Hari</div></div>
+                    <div class="countdown-box"><div id="hours" class="countdown-number">0</div><div class="countdown-label">Jam</div></div>
+                    <div class="countdown-box"><div id="minutes" class="countdown-number">0</div><div class="countdown-label">Menit</div></div>
+                    <div class="countdown-box"><div id="seconds" class="countdown-number">0</div><div class="countdown-label">Detik</div></div>
+                </div>
+
+                <div class="event-details-box text-start">
+                    <div class="detail-row">
+                        <div class="detail-icon"><i class="far fa-calendar-alt"></i></div>
+                        <div class="detail-text"><div class="label-title">Hari/Tanggal</div><span>Minggu, 7 Desember 2025</span></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-icon"><i class="far fa-clock"></i></div>
+                        <div class="detail-text"><div class="label-title">Waktu</div><span>08.00 WIB s/d Selesai</span></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="detail-text">
+                            <div class="label-title">Tempat</div>
+                            <span>Kp. Ciburial RT 02/13, Desa Cibogo, Kec. Lembang, Kab. Bandung Barat</span>
+                        </div>
+                    </div>
+                </div>
+
+               <!-- <a href="https://www.google.com/maps/search/?api=1&query=Kp.+Ciburial+RT+02/13,+Desa+Cibogo,+Kec.+Lembang,+Kab.+Bandung+Barat" target="_blank" class="btn btn-primary btn-custom px-4 py-2 text-white text-decoration-none w-100 mb-3">
+                    <i class="fas fa-map-marked-alt me-2"></i> Buka Google Maps App
+                </a>
+
+                <div class="map-container mb-5">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.5658686129883!2d107.6335!3d-6.8225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68e10000000001%3A0x0!2zNsKwNDknMjEuMCJTIDEwN8KwMzgnMDAuNiJF!5e0!3m2!1sid!2sid!4v1600000000000!5m2!1sid!2sid" width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+                </div>
+-->
+                <div class="mb-5">
+                    <h2 class="script-font display-6 fw-bold mb-3">Kado Khitan</h2>
+                    <p class="small text-muted mb-4 px-2">
+                       Tanpa mengurangi rasa hormat, bagi Bapak/Ibu/saudara/i yang ingin memberikan kado khitanan, dapat melalui :
+                    </p>
+                    
+                    <div class="bank-card mx-2">
+                        <div class="d-flex justify-content-center mb-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" class="bank-logo" alt="BCA">
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center gap-2 mb-1">
+                            <span id="norek" class="fs-4 fw-bold text-dark">1370329717</span>
+                            <button onclick="copyNorek()" class="btn btn-sm btn-outline-primary rounded-pill py-0" title="Salin">
+                                <i class="far fa-copy"></i>
+                            </button>
+                        </div>
+                        <div class="text-muted small text-uppercase fw-bold">a.n Wawan Gunawan</div>
+                    </div>
+                </div>
+
+                <div id="komen" class="mb-5">
+                    <h2 class="script-font display-6 fw-bold mb-3">Ucapan & Doa</h2>
+                    <p class="small text-muted mb-4 px-2">
+                        Berikan Do'a dan Ucapan terbaik anda kepada Rizqy Al Fattar.
+                    </p>
+
+                    <form id="commentForm" class="mb-4 text-start">
+                        <div class="mb-3">
+                            <input type="text" id="name" class="form-control rounded-pill px-3" placeholder="Nama Anda" required>
+                        </div>
+                        <div class="mb-3">
+                            <textarea id="comment" class="form-control rounded-4 px-3" rows="3" placeholder="Tulis ucapan..." required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-custom text-white">
+                                <i class="fas fa-paper-plane me-2"></i> Kirim Ucapan
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="row justify-content-center mx-0" style="background-color: #f8f9fa; border-radius: 15px; padding: 15px 5px;">
+                        <h6 class="text-start fw-bold ms-2 mb-3 text-muted"><i class="fas fa-comments me-2"></i>Komentar Terbaru</h6>
+                        <div id="commentSection" class="comment-scroll">
+                            <div class="text-center text-muted small fst-italic py-3">Memuat komentar...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="small text-muted fst-italic mb-4 mt-5">
+                    "Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir memberikan doa restu."
+                </p>
+
+                <div class="mt-4 pb-4">
+                    <p class="bismillah fs-2 mb-2 script-font mb-1 fw-bold">Wassalamu'alaikum Wr. Wb.</p>
+                    <p class="text-muted small">Hormat Kami,</p>
+                    <h5 class="fw-bold text-dark">Kel. Bpk. Wawan Gunawan</h5>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+      import { getDatabase, ref, set, push, onValue } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-database.js";
+
+      // Config
+      const firebaseConfig = {
+        apiKey: "AIzaSyCF4Mf47CKqZc_wQOSUO-QJDweQ8wply2I",
+        authDomain: "egi-dan-indri-wedding.firebaseapp.com",
+        databaseURL: "https://egi-dan-indri-wedding-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "egi-dan-indri-wedding",
+        storageBucket: "egi-dan-indri-wedding.appspot.com",
+        messagingSenderId: "170163803216",
+        appId: "1:170163803216:web:4f4f87ec111626cf922d55",
+        measurementId: "G-FECC3F55FC",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      // Submit Form
+      const commentForm = document.getElementById("commentForm");
+      commentForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const comment = document.getElementById("comment").value;
+
+        if (name && comment) {
+          const commentsRef = ref(database, "comments");
+          const newCommentRef = push(commentsRef);
+          set(newCommentRef, {
+            name: name,
+            comment: comment,
+            timestamp: Date.now(),
+          }).then(() => {
+            document.getElementById("name").value = "";
+            document.getElementById("comment").value = "";
+          });
+        }
+      });
+
+      // Logic Waktu
+      function timeAgo(timestamp) {
+        const now = Date.now();
+        const seconds = Math.floor((now - timestamp) / 1000);
+        if (seconds < 0) return "Baru saja";
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) return interval + " tahun yang lalu";
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) return interval + " bulan yang lalu";
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) return interval + " hari yang lalu";
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) return interval + " jam yang lalu";
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) return interval + " menit yang lalu";
+        return "Baru saja";
+      }
+
+      function updateAllTimestamps() {
+          const timeElements = document.querySelectorAll('.live-time');
+          timeElements.forEach(el => {
+              const ts = parseInt(el.getAttribute('data-ts'));
+              if (!isNaN(ts)) el.innerText = timeAgo(ts);
+          });
+      }
+      setInterval(updateAllTimestamps, 60000);
+
+      // Render
+      const commentSection = document.getElementById("commentSection");
+      function getInitials(name) {
+        const nameParts = name.trim().split(" ");
+        const initials = nameParts[0][0] + (nameParts[1] ? nameParts[1][0] : "");
+        return initials.toUpperCase();
+      }
+      function hashStringToColor(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) { hash = str.charCodeAt(i) + ((hash << 5) - hash); }
+        const color = `#${((hash >> 24) & 0xff).toString(16).padStart(2, "0")}${((hash >> 16) & 0xff).toString(16).padStart(2, "0")}${((hash >> 8) & 0xff).toString(16).padStart(2, "0")}`;
+        return color.substring(0, 7);
+      }
+
+      const commentsRef = ref(database, "comments");
+      onValue(commentsRef, (snapshot) => {
+        commentSection.innerHTML = "";
+        const comments = [];
+        snapshot.forEach((childSnapshot) => { comments.push(childSnapshot.val()); });
+
+        if (comments.length === 0) {
+            commentSection.innerHTML = '<div class="text-center text-muted small fst-italic py-3">Belum ada ucapan, jadilah yang pertama!</div>';
+            return;
+        }
+        comments.reverse();
+
+        comments.forEach((commentData) => {
+          const commentElement = document.createElement("div");
+          commentElement.classList.add("d-flex", "mb-3", "align-items-start");
+          const initials = getInitials(commentData.name);
+          const backgroundColor = hashStringToColor(commentData.name);
+          const initialTimeText = timeAgo(commentData.timestamp);
+
+          commentElement.innerHTML = `
+            <div class="profile-initial me-2 shadow-sm" style="background-color: ${backgroundColor};">
+                ${initials}
+            </div>
+            <div class="comment-bubble shadow-sm">
+                <strong class="d-block text-primary" style="font-size: 0.9rem;">${commentData.name}</strong>
+                <span class="text-dark" style="font-size: 0.95rem;">${commentData.comment}</span>
+                <div class="text-muted small mt-1">
+                    <i class="far fa-clock me-1"></i> <span class="live-time" data-ts="${commentData.timestamp}">${initialTimeText}</span>
+                </div>
+            </div>
+          `;
+          commentSection.appendChild(commentElement);
+        });
+      });
+    </script>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-control');
+        const musicIcon = musicBtn.querySelector('i');
+
+        function bukaUndangan() {
+            const splash = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+            
+            // 1. Animasi buka
+            splash.classList.add('hide-splash');
+            setTimeout(() => {
+                splash.style.display = 'none';
+                mainContent.style.display = 'block';
+                setTimeout(() => { mainContent.style.opacity = '1'; }, 50);
+                document.body.style.overflow = 'auto';
+            }, 800);
+
+            // 2. Play Musik
+            playMusic();
+        }
+
+        function playMusic() {
+            audio.volume = 0.5; // Set volume 50%
+            audio.play().then(() => {
+                // Jika sukses play
+                musicBtn.style.display = "flex"; // Munculkan tombol
+                musicIcon.classList.add('rotating'); // Putar ikon
+            }).catch((error) => {
+                console.log("Autoplay dicegah browser, perlu interaksi manual");
+                musicBtn.style.display = "flex"; // Tetap munculkan tombol agar user bisa klik manual
+                musicIcon.classList.remove('rotating'); // Jangan putar dulu
+            });
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicIcon.classList.add('rotating');
+            } else {
+                audio.pause();
+                musicIcon.classList.remove('rotating');
+            }
+        }
+
+        function copyNorek() {
+            const norek = "1370329717";
+            navigator.clipboard.writeText(norek).then(() => { alert("Nomor Rekening Berhasil Disalin!"); });
+        }
+
+        const countDownDate = new Date("Dec 7, 2025 08:00:00").getTime();
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+            if (distance < 0) { clearInterval(x); }
+        }, 1000);
+    </script>
+</body>
+</html>
